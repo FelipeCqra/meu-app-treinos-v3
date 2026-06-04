@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gym Tracker V2 • Elite UI</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <main class="app-container">
+        
+        <!-- ABA 1: MESOCICLOS -->
+<section id="tab-mesociclos" class="app-tab">
+    <header class="tab-header">
+        <h1>Mesociclos 2026</h1>
+        <p>Planejamento Estruturado Alvo</p>
+    </header>
+    
+    <!-- FASE ATUAL HIGHLIGHT -->
+    <div class="info-card highlight">
+        <div class="card-badge" style="background: rgba(0,122,255,0.15); color: #007AFF;">FASE ATUAL</div>
+        <h3>🔥 LEAN BULK (Fase Principal)</h3>
+        <p class="card-meta">Período: 01/06/2026 → 25/10/2026</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;"><strong>Objetivo:</strong> Ganho de massa controlado</p>
+        
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 13px; margin-bottom: 6px; color: var(--success);"><strong>• Bloco 1 (7 semanas):</strong> 08/06 → 19/07 | 2700 → 2850 kcal</div>
+            <div style="font-size: 13px; margin-bottom: 6px; color: var(--warning);"><strong>• Deload:</strong> 20/07 → 26/07 | 2600 kcal</div>
+            <div style="font-size: 13px; margin-bottom: 6px;"><strong>• Bloco 2 (6 semanas):</strong> 27/07 → 06/09 | 2800 → 3000 kcal</div>
+            <div style="font-size: 13px; margin-bottom: 6px;"><strong>• Deload:</strong> 07/09 → 13/09 | 2600–2650 kcal</div>
+            <div style="font-size: 13px;"><strong>• Bloco 3 (6 semanas):</strong> 14/09 → 25/10 | 2850 → 2750 → 2650 kcal</div>
+        </div>
+    </div>
+
+    <!-- CRONOGRAMA COMPLETO EM ACCORDIONS -->
+    <h2 class="section-title">Linha do Tempo</h2>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary" style="color: var(--text-muted);">⏮️ Histórico: Deload Inicial & Manutenção</summary>
+        <div class="accordion-content">
+            <div style="margin-bottom: 10px;">
+                <strong>Deload Inicial (1 Semana)</strong><br>
+                <span class="card-meta">04/05/2026 → 10/05/2026 • 2400 kcal</span>
+                <p style="font-size:12px; color:var(--text-muted);">Vol. reduzido em 50% | Sem falha | Recuperar cutting.</p>
+            </div>
+            <hr style="border-color: var(--border-color); margin: 8px 0;">
+            <div>
+                <strong>Manutenção (3 Semanas)</strong><br>
+                <span class="card-meta">11/05/2026 → 31/05/2026 • 2400 → 2600 kcal</span>
+                <p style="font-size:12px; color:var(--text-muted);">Consolidar físico e performar.</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary" style="color: var(--warning);">⏳ Fases Futuras: Transição & Mini Cut</summary>
+        <div class="accordion-content">
+            <div style="margin-bottom: 10px;">
+                <strong>Transição (1 Semana)</strong><br>
+                <span class="card-meta">26/10/2026 → 01/11/2026 • 2500 kcal</span>
+            </div>
+            <hr style="border-color: var(--border-color); margin: 8px 0;">
+            <div>
+                <strong>Mini Cut (3 Semanas)</strong><br>
+                <span class="card-meta">02/11/2026 → 22/11/2026</span>
+                <p style="font-size:12px; color:var(--text-muted);">S1: 2400 kcal | S2: 2300 kcal | S3: 2200 kcal</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary" style="color: var(--accent);">💀 Lapidação: Cutting Final</summary>
+        <div class="accordion-content">
+            <strong>Cutting Final (4 Semanas)</strong><br>
+            <span class="card-meta">23/11/2026 → 20/12/2026</span>
+            <p style="font-size:12px; color:var(--text-muted);">S1: 2300 kcal | S2: 2100 kcal | S3: 2100 kcal | S4: Carb Up (2350→2450 kcal)</p>
+        </div>
+    </details>
+</section>
+
+        <!-- ABA 2: PROTOCOLO -->
+<section id="tab-protocolo" class="app-tab">
+    <header class="tab-header">
+        <h1>Protocolo Activo</h1>
+        <p>Divisão Semanal & Volume Target</p>
+    </header>
+
+    <!-- CALENDÁRIO DA DIVISÃO -->
+    <div class="info-card">
+        <h3 style="color: var(--accent); margin-bottom: 10px; font-size:15px;">🗓️ Calendário Semanal</h3>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px;">
+            <div><strong>Seg:</strong> Pull + Peito <span style="color: var(--text-muted); font-size:11px;">(+20m Cardio)</span></div>
+            <div><strong>Ter:</strong> Legs 1</div>
+            <div><strong>Qua:</strong> Descanso <span style="color: var(--text-muted); font-size:11px;">(+30m Cardio)</span></div>
+            <div><strong>Qui:</strong> Push + Costas</div>
+            <div><strong>Sex:</strong> Descanso <span style="color: var(--text-muted); font-size:11px;">(+30m Cardio)</span></div>
+            <div><strong>Sáb:</strong> Legs 2</div>
+            <div><strong>Dom:</strong> Descanso</div>
+        </div>
+    </div>
+
+    <!-- PREPARAÇÃO DIÁRIA -->
+    <div class="info-card">
+        <h3 style="color: var(--warning); margin-bottom: 10px; font-size:15px;">🧠 Preparação Diária (Core & Warmup)</h3>
+        <ul style="list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 6px;">
+            <li>🏃‍♂️ <strong>Legs 1:</strong> 1 a 2 séries de aquecimento no Stiff antes do treino</li>
+            <li>🤸‍♂️ <strong>Legs 1 e 2:</strong> Canoinha Isometria 3x30s</li>
+            <li>🏋️‍♂️ <strong>Pull + Peito:</strong> Abdominal Supra Máquina 3x15</li>
+            <li>💪 <strong>Push + Costas:</strong> Abdominal Infra Máquina 3x20</li>
+        </ul>
+    </div>
+
+    <!-- ESTRUTURA DAS FICHAS (ACCORDIONS) -->
+    <h2 class="section-title">Fichas de Exercícios</h2>
+    
+    <details class="semana-accordion">
+        <summary class="semana-summary">🔥 Pull + Peito</summary>
+        <div class="accordion-content" style="font-size:13px; line-height: 1.6;">
+            • Aquecimento Manguito: 2x12<br>
+            • Remada T-Bar Aberta: 2 séries<br>
+            • Puxador Bilateral: 2 séries<br>
+            • Supino Inclinado Articulado: 3 séries<br>
+            • Remada Baixa Máquina (Apoio Peito): 3 séries<br>
+            • Elevação Lateral Máquina Sentado: 2 séries<br>
+            • Rosca Unilateral Cabo: 2 séries<br>
+            • Tríceps Pulley Encostado: 2 séries
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary">🦵 Legs 1</summary>
+        <div class="accordion-content" style="font-size:13px; line-height: 1.6;">
+            • Extensão Lombar (Paravertebral + Post.): 2 séries<br>
+            • Estímulo Cadeira Adutora: 1 série<br>
+            • Cadeira Extensora: 2 séries<br>
+            • Leg Horizontal Unilateral: 2 séries<br>
+            • Panturrilha Leg Horizontal: 2 séries
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary">⚡ Push + Costas</summary>
+        <div class="accordion-content" style="font-size:13px; line-height: 1.6;">
+            • Aquecimento Manguito: 2x12<br>
+            • Remada T-Bar Fechada: 2 séries<br>
+            • Puxador Aberto Romano: 3 séries<br>
+            • Supino Reto Máquina: 2 séries<br>
+            • Fly Máquina: 1 série<br>
+            • Elevação Lateral Unilateral Cabo: 3 séries<br>
+            • Rosca Scott: 2 séries<br>
+            • Tríceps Pulley: 2 séries
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary">🪵 Legs 2</summary>
+        <div class="accordion-content" style="font-size:13px; line-height: 1.6;">
+            • Mesa Flexora Unilateral: 2 séries<br>
+            • Cadeira Flexora Unilateral: 2 séries<br>
+            • Estímulo Cadeira Abdutora: 1 série<br>
+            • Hack Machine ou Agachamento Máquina: 2 séries<br>
+            • Panturrilha Sentado: 2 séries<br>
+            • Panturrilha Em Pé Livre: 2 séries
+        </div>
+    </details>
+
+    <!-- METRICS DE VOLUME -->
+    <details class="semana-accordion" style="margin-bottom: 120px;">
+        <summary class="semana-summary" style="color:var(--success);">📊 Targets de Volume Semanal</summary>
+        <div class="accordion-content">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size:12px;">
+                <div><strong>Costas:</strong> 14–18 séries</div>
+                <div><strong>Peito:</strong> 6–9 séries</div>
+                <div><strong>Ombro:</strong> 5–6 séries</div>
+                <div><strong>Bíceps:</strong> 4–6 séries</div>
+                <div><strong>Tríceps:</strong> 4–6 séries</div>
+                <div><strong>Quadríceps:</strong> 6 séries</div>
+                <div><strong>Posterior:</strong> 6–7 séries</div>
+                <div><strong>Panturrilha:</strong> 6 séries</div>
+            </div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:10px; font-style:italic;">Obs: Avaliar aumento gradual para peito, bíceps e tríceps.</p>
+        </div>
+    </details>
+</section>
+
+        <!-- ABA 3: DIETA -->
+<section id="tab-dieta" class="app-tab">
+    <header class="tab-header">
+        <h1>Plano Alimentar</h1>
+        <p>Diretrizes & Distribuição Diária</p>
+    </header>
+
+    <!-- REGRAS GERAIS INALTERÁVEIS -->
+    <div class="info-card">
+        <h3 style="color: #007AFF; margin-bottom: 8px; font-size:15px;">💧 Regras Gerais Básicas</h3>
+        <p style="font-size: 13px;"><strong>Hidratação:</strong> ~5 Litros/dia (Equivale a 8 garrafas de 600ml)</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px; font-style: italic;">🚨 Zero queijo, zero cream cheese. Apenas manteiga em pouca quantidade para grelhar/preparo.</p>
+    </div>
+
+    <!-- FASE ATUAL VIGENTE -->
+    <div class="info-card highlight">
+        <div class="card-badge">DIETA ATIVA</div>
+        <h3 style="color: var(--success);">Lean Bulk Bloco 1 - Fase 1</h3>
+        <p class="card-meta">Vigência: 01/06/2026 → 21/06/2026</p>
+        
+        <div style="display:flex; justify-content:space-between; margin-top:10px; background:var(--bg-input); padding:8px; border-radius:6px; font-size:12px; font-weight:700;">
+            <span>🔥 2710 kcal</span>
+            <span>🍞 C: 358g</span>
+            <span>🥩 P: 174g</span>
+            <span>🥑 G: 65g</span>
+        </div>
+
+        <!-- REFEIÇÕES DA FASE ATIVA -->
+        <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
+            <div class="meal-card" style="margin:0; background: rgba(255,255,255,0.02)">
+                <div class="meal-header"><h4>Refeição 1</h4> <span class="meal-time">09h–10h</span></div>
+                <p>120g tapioca + 1 banana + 5 ovos inteiros</p>
+            </div>
+            <div class="meal-card" style="margin:0; background: rgba(255,255,255,0.02)">
+                <div class="meal-header"><h4>Refeição 2</h4> <span class="meal-time">13h–14h</span></div>
+                <p>220g macarrão espaguete (pronto) + 200g filé de peito de frango (pronto) + 1 banana prata</p>
+            </div>
+            <div class="meal-card" style="margin:0; background: rgba(255,255,255,0.02)">
+                <div class="meal-header"><h4>Refeição 3</h4> <span class="meal-time">17h–18h</span></div>
+                <p>200g macarrão espaguete (pronto) + 180g filé de peito de frango (pronto)</p>
+            </div>
+            <div class="meal-card" style="margin:0; background: rgba(255,255,255,0.02)">
+                <div class="meal-header"><h4>Refeição 4</h4> <span class="meal-time">21h–22h</span></div>
+                <p>100g cuscuz + 5 ovos inteiros + 1 banana + 30g aveia</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUTRAS FASES DA DIETA (HISTÓRICO / FUTURO PRÓXIMO) -->
+    <h2 class="section-title">Próximas Fases & Histórico</h2>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary">🚀 Próxima: Lean Bulk Bloco 1 - Fase 2</summary>
+        <div class="accordion-content" style="font-size:12px;">
+            <span class="card-meta">Período: 22/06/2026 → 19/07/2026</span>
+            <p style="margin: 4px 0 8px 0; font-weight:700; color:var(--success);">2824 kcal | C: 382g | P: 177g | G: 65g</p>
+            <strong>Mudanças nas porções:</strong>
+            <p>• Ref 2: Sobe para 250g de macarrão espaguete.<br>• Ref 3: Sobe para 250g de macarrão espaguete.</p>
+        </div>
+    </details>
+
+    <details class="semana-accordion">
+        <summary class="semana-summary" style="color:var(--text-muted);">⏮️ Passada: Manutenção - Fase 2</summary>
+        <div class="accordion-content" style="font-size:12px;">
+            <span class="card-meta">Período: 25/05/2026 → 31/05/2026</span>
+            <p style="margin: 4px 0 4px 0; font-weight:600;">2601 kcal | C: 318g | P: 177g | G: 69g</p>
+        </div>
+    </details>
+
+    <details class="semana-accordion" style="margin-bottom: 120px;">
+        <summary class="semana-summary" style="color:var(--text-muted);">⏮️ Passada: Deload / Manutenção - Fase 1</summary>
+        <div class="accordion-content" style="font-size:12px;">
+            <span class="card-meta">Período: 04/05/2026 → 24/05/2026</span>
+            <p style="margin: 4px 0 4px 0; font-weight:600;">2403 kcal | C: 269g | P: 181g | G: 69g</p>
+        </div>
+    </details>
+</section>
+
+        <section id="tab-registrar" class="app-tab active">
+            <header class="tab-header">
+                <h1>Registrar Sessão</h1>
+                <p>Alimente o seu progresso</p>
+            </header>
+
+            <form id="form-treino" autocomplete="off">
+                <div class="meta-grid">
+                    <div class="input-group">
+                        <label>Semana</label>
+                        <input type="number" id="semana" min="1" placeholder="Ex: 1" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Data</label>
+                        <input type="date" id="data-treino" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Ficha / Divisão</label>
+                    <select id="tipo-treino" required>
+                        <option value="UPPER">UPPER (Superior)</option>
+                        <option value="LOWER">LOWER (Inferior)</option>
+                        <option value="PUSH">PUSH (Empurrar)</option>
+                        <option value="PULL">PULL (Puxar)</option>
+                        <option value="LEGS">LEGS (Pernas)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Fase / Bloco (Opcional)</label>
+                    <input type="text" id="fase-desc" placeholder="Ex: Acumulação, Deload...">
+                </div>
+
+                <div id="exercicios-container"></div>
+
+                <button type="button" id="btn-adicionar-exercicio" class="btn btn-secondary">
+                    ➕ ADICIONAR EXERCÍCIO
+                </button>
+
+                <div class="input-group" style="margin-top: 25px; margin-bottom: 120px;">
+                    <label>Percepção Geral do Treino</label>
+                    <textarea id="notas-gerais" rows="3" placeholder="Disposição, sono, cansaço geral..."></textarea>
+                </div>
+            </form>
+        </section>
+
+        <section id="tab-feedbacks" class="app-tab">
+            <header class="tab-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1>Histórico</h1>
+                        <p>Sua evolução em semanas</p>
+                    </div>
+                    <button type="button" id="btn-cancelar-edicao" class="btn btn-secondary hidden" style="width: auto; padding: 8px 12px; margin: 0; font-size: 12px; color:#ff3b30; border-color: rgba(255,59,48,0.3);">
+                        ❌ Cancelar Edição
+                    </button>
+                </div>
+            </header>
+            
+            <div id="historico-container" style="margin-bottom: 120px;"></div>
+        </section>
+
+    </main>
+
+    <aside class="responsive-nav-area">
+        <nav class="main-nav">
+            <button type="button" class="nav-item" data-target="tab-mesociclos">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Mesociclos</span>
+            </button>
+            <button type="button" class="nav-item" data-target="tab-protocolo">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Protocolo</span>
+            </button>
+            <button type="button" class="nav-item" data-target="tab-dieta">
+                <span class="nav-icon">🍏</span>
+                <span class="nav-label">Dieta</span>
+            </button>
+            <button type="button" class="nav-item active" data-target="tab-registrar">
+                <span class="nav-icon">🏋️‍♂️</span>
+                <span class="nav-label">Registrar</span>
+            </button>
+            <button type="button" class="nav-item" data-target="tab-feedbacks">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Feedbacks</span>
+            </button>
+        </nav>
+
+        <button type="button" id="btn-salvar-treino" class="btn btn-primary btn-save-action">
+            <span class="btn-text">SALVAR SESSÃO</span>
+            <div class="spinner hidden"></div>
+        </button>
+    </aside>
+
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/crud.js"></script>
+    <script type="module" src="js/render.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
