@@ -232,3 +232,15 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
     
     .volume-grid { grid-template-columns: repeat(2, 1fr); }
 }
+/* ==========================================================================
+   CORREÇÃO DE RESPONSIVIDADE: BADGES EM TELAS MÓVEIS (CELULAR)
+   ========================================================================== */
+@media (max-width: 799px) {
+    /* Opção Recomendada: Faz o badge virar um bloco acima do texto no celular, 
+       dando 100% de espaço para o título respirar sem se espremer */
+    .card-badge {
+        position: static !important;
+        display: inline-block;
+        margin-bottom: 12px;
+    }
+}
