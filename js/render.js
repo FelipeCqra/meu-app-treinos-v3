@@ -49,11 +49,17 @@ export function obterOpcoesDeExercicios(membro) {
 export function renderNovaLinhaExercicio(container, membro = "UPPER") {
     const block = document.createElement('div');
     block.className = 'exercise-block';
+    // Transição suave para o efeito visual de troca
+    block.style.transition = 'background-color 0.3s ease'; 
     
     block.innerHTML = `
-        <button type="button" class="btn-remove" style="position: absolute; top: 14px; right: 14px; background: transparent; color: var(--accent); border: 1px solid rgba(255,59,48,0.3); padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight:600;">❌ Remover</button>
+        <div style="position: absolute; top: 14px; right: 14px; display: flex; gap: 6px;">
+            <button type="button" class="btn-move-up" title="Mover para cima" style="background: #1F1F24; border: 1px solid var(--border-color); color: #fff; padding: 4px 6px; border-radius: 6px; cursor: pointer; font-size: 11px;">上 ⬆️</button>
+            <button type="button" class="btn-move-down" title="Mover para baixo" style="background: #1F1F24; border: 1px solid var(--border-color); color: #fff; padding: 4px 6px; border-radius: 6px; cursor: pointer; font-size: 11px;">下 ⬇️</button>
+            <button type="button" class="btn-remove" title="Remover Exercício" style="background: transparent; color: var(--accent); border: 1px solid rgba(255,59,48,0.3); padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight:600;">❌</button>
+        </div>
         
-        <div class="input-group" style="width: 70%; margin-bottom: 12px;">
+        <div class="input-group" style="width: 62%; margin-bottom: 12px;">
             <label>Exercício</label>
             <select class="ex-name" style="padding: 10px; font-size: 14px;">
                 ${obterOpcoesDeExercicios(membro)}
@@ -70,7 +76,33 @@ export function renderNovaLinhaExercicio(container, membro = "UPPER") {
         </div>
     `;
 
+    // Função interna para dar um feedback visual ao mover
+    const destacarBloco = (elemento) => {
+        elemento.style.backgroundColor = 'var(--border-color)';
+        setTimeout(() => {
+            elemento.style.backgroundColor = 'var(--bg-card)';
+        }, 200);
+    };
+
+    // Lógica para Remover
     block.querySelector(".btn-remove").addEventListener("click", () => block.remove());
+    
+    // Lógica para Mover para Cima
+    block.querySelector(".btn-move-up").addEventListener("click", () => {
+        if (block.previousElementSibling) {
+            block.parentNode.insertBefore(block, block.previousElementSibling);
+            destacarBloco(block);
+        }
+    });
+
+    // Lógica para Mover para Baixo
+    block.querySelector(".btn-move-down").addEventListener("click", () => {
+        if (block.nextElementSibling) {
+            block.parentNode.insertBefore(block.nextElementSibling, block);
+            destacarBloco(block);
+        }
+    });
+
     const setsContainer = block.querySelector(".sets-container");
     block.querySelector(".btn-add-set").addEventListener("click", () => renderNovaSerie(setsContainer));
     renderNovaSerie(setsContainer, 'Válida');
