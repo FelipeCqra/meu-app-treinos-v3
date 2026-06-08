@@ -265,6 +265,9 @@ async function handleFormSubmit(e) {
 document.addEventListener("DOMContentLoaded", () => {
     definirDataHoje();
 
+    // Força a inicialização visual na aba de Protocolo
+    mudarAba('tab-protocolo');
+
     const container = document.getElementById('exercicios-container');
     const btnAddExercise = document.getElementById('btn-adicionar-exercicio');
     const tipoTreinoInput = document.getElementById('tipo-treino');
