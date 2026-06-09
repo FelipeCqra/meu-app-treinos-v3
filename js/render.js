@@ -159,7 +159,7 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
 
         treinosDaSemana.forEach(sessao => {
             const card = document.createElement('div');
-            card.className = 'card-treino-v2';
+            // Removemos a classe 'card-treino-v2' para não dar conflito com o accordion interno
 
             let htmlExercicios = "";
             if (sessao.exercicios && Array.isArray(sessao.exercicios)) {
@@ -192,23 +192,40 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
                 });
             }
 
+            // Novo layout do card em formato "sanfona" (accordion)
             card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                    <div>
-                        <h4 style="font-size:15px; font-weight:700;">${sessao.treino}</h4>
-                        <span style="font-size:11px; color:var(--text-muted);">${sessao.dataStr} ${sessao.faseDescricao ? `• 🏷️ ${sessao.faseDescricao}` : ''}</span>
+                <details class="semana-accordion" style="margin-bottom: 12px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--accent); width: 100%;">
+                    <summary class="semana-summary" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; list-style: none;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <h4 style="font-size:15px; font-weight:700; margin: 0;">${sessao.treino}</h4>
+                            <span style="font-size:11px; color:var(--text-muted);">${sessao.dataStr} ${sessao.faseDescricao ? `• 🏷️ ${sessao.faseDescricao}` : ''}</span>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-edit" style="background:#2C2C2E; color:#FFF; border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Editar">✏️</button>
+                            <button class="btn-del" style="background:rgba(255,59,48,0.1); color:var(--accent); border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Excluir">🗑️</button>
+                        </div>
+                    </summary>
+                    
+                    <div class="accordion-content" style="padding: 0 12px 12px 12px;">
+                        <div style="margin-bottom: 8px;">${htmlExercicios}</div>
+                        ${sessao.notasGerais ? `<div style="background:var(--bg-input); border-left:2px solid var(--accent); padding:8px; border-radius:4px; margin-top:8px; font-size:12px; color:#ccc; line-height: 1.4;">📝 <b>Nota:</b> ${sessao.notasGerais}</div>` : ''}
                     </div>
-                    <div style="display:flex; gap:4px;">
-                        <button class="btn-edit" style="background:#2C2C2E; color:#FFF; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">✏️</button>
-                        <button class="btn-del" style="background:rgba(255,59,48,0.1); color:var(--accent); border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🗑️</button>
-                    </div>
-                </div>
-                <div>${htmlExercicios}</div>
-                ${sessao.notasGerais ? `<div style="background:var(--bg-input); border-left:2px solid var(--accent); padding:6px; border-radius:4px; margin-top:8px; font-size:11px; color:#ccc;">📝 <b>Nota:</b> ${sessao.notasGerais}</div>` : ''}
+                </details>
             `;
             
-            card.querySelector(".btn-edit").addEventListener("click", () => onEdit(sessao));
-            card.querySelector(".btn-del").addEventListener("click", () => onDelete(sessao.id));
+            // Adicionando os eventos com stopPropagation para não abrir/fechar o card ao clicar nos botões
+            card.querySelector(".btn-edit").addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onEdit(sessao);
+            });
+            
+            card.querySelector(".btn-del").addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDelete(sessao.id); 
+            });
+
             content.appendChild(card);
         });
 
