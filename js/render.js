@@ -3,19 +3,21 @@ const exerciciosGerais = [
     "--- AQUECIMENTO / PREVENÇÃO ---", "Aquecimento manguito", "Liberação do Trapézio com bolinha", "Child's pose e variação", "Wall slides", "Rotação torácica"
 ];
 
+const exerciciosUpper = [
+    "--- PEITO ---", "Supino inclinado articulado", "Supino reto máquina", "Fly máquina",
+    "--- COSTAS ---", "Remada T-bar aberta", "Puxador bilateral", "Remada baixa máquina apoio de peito", "Remada T-bar fechada", "Puxador aberto romano", "Puxador fechado romano", "Puxador aberto pronado", "Extensão lombar no banco romano",
+    "--- OMBRO ---", "Elevação lateral máquina sentado", "Elevação lateral unilateral cabo", "Elevação lateral em pé máquina",
+    "--- BÍCEPS ---", "Rosca unilateral cabo", "Rosca Scott", "Rosca martelo corda", "Rosca martelo halter",
+    "--- TRÍCEPS ---", "Tríceps pulley encostado", "Tríceps pulley", "Tríceps testa halter"
+].concat(exerciciosGerais);
+
+const exerciciosLower = [
+    "--- QUADRÍCEPS ---", "Cadeira extensora", "Leg horizontal unilateral", "Hack machine", "Leg 45", "Agachamento smith", "Agachamento máquina", "Cadeira adutora",
+    "--- POSTERIOR ---", "Mesa flexora unilateral", "Cadeira flexora unilateral", "Mesa flexora", "Cadeira flexora", "Stiff", "Flexor em pé unilateral", "Extensão lombar no banco romano", "Cadeira abdutora",
+    "--- PANTURRILHA ---", "Panturrilha leg horizontal", "Panturrilha sentado", "Panturrilha em pé unilateral livre"
+].concat(exerciciosGerais);
+
 export const dbExercicios = {
-    "UPPER": [
-        "--- PEITO ---", "Supino inclinado articulado", "Supino reto máquina", "Fly máquina",
-        "--- COSTAS ---", "Remada T-bar aberta", "Puxador bilateral", "Remada baixa máquina apoio de peito", "Remada T-bar fechada", "Puxador aberto romano", "Puxador fechado romano", "Puxador aberto pronado", "Extensão lombar no banco romano",
-        "--- OMBRO ---", "Elevação lateral máquina sentado", "Elevação lateral unilateral cabo", "Elevação lateral em pé máquina",
-        "--- BÍCEPS ---", "Rosca unilateral cabo", "Rosca Scott", "Rosca martelo corda", "Rosca martelo halter",
-        "--- TRÍCEPS ---", "Tríceps pulley encostado", "Tríceps pulley", "Tríceps testa halter"
-    ].concat(exerciciosGerais),
-    "LOWER": [
-        "--- QUADRÍCEPS ---", "Cadeira extensora", "Leg horizontal unilateral", "Hack machine", "Leg 45", "Agachamento smith", "Agachamento máquina", "Cadeira adutora",
-        "--- POSTERIOR ---", "Mesa flexora unilateral", "Cadeira flexora unilateral", "Mesa flexora", "Cadeira flexora", "Stiff", "Flexor em pé unilateral", "Extensão lombar no banco romano", "Cadeira abdutora",
-        "--- PANTURRILHA ---", "Panturrilha leg horizontal", "Panturrilha sentado", "Panturrilha em pé unilateral livre"
-    ].concat(exerciciosGerais),
     "PUSH": [
         "--- PEITO ---", "Supino inclinado articulado", "Supino reto máquina", "Fly máquina",
         "--- OMBRO ---", "Elevação lateral máquina sentado", "Elevação lateral unilateral cabo", "Elevação lateral em pé máquina",
@@ -25,15 +27,17 @@ export const dbExercicios = {
         "--- COSTAS ---", "Remada T-bar aberta", "Puxador bilateral", "Remada baixa máquina apoio de peito", "Remada T-bar fechada", "Puxador aberto romano", "Puxador fechado romano", "Puxador aberto pronado", "Extensão lombar no banco romano",
         "--- BÍCEPS ---", "Rosca unilateral cabo", "Rosca Scott", "Rosca martelo corda", "Rosca martelo halter"
     ].concat(exerciciosGerais),
-    "LEGS": [
-        "--- QUADRÍCEPS ---", "Cadeira extensora", "Leg horizontal unilateral", "Hack machine ou agachamento máquina", "Hack machine", "Leg 45", "Agachamento smith", "Agachamento máquina", "Cadeira adutora",
-        "--- POSTERIOR ---", "Mesa flexora unilateral", "Cadeira flexora unilateral", "Mesa flexora", "Cadeira flexora", "Stiff", "Flexor em pé unilateral", "Extensão lombar no banco romano", "Cadeira abdutora",
-        "--- PANTURRILHA ---", "Panturrilha leg horizontal", "Panturrilha sentado", "Panturrilha em pé unilateral livre"
-    ].concat(exerciciosGerais)
+    "UPPER": exerciciosUpper,
+    "PULL_PEITO": exerciciosUpper,
+    "PUSH_COSTAS": exerciciosUpper,
+    "LOWER": exerciciosLower,
+    "LEGS1": exerciciosLower,
+    "LEGS2": exerciciosLower,
+    "LEGS": exerciciosLower // Mantido internamente apenas para não bugar treinos antigos já salvos no histórico
 };
 
 export function obterOpcoesDeExercicios(membro) {
-    const lista = dbExercicios[membro] || [];
+    const lista = dbExercicios[membro] || exerciciosUpper;
     let optionsHTML = '<option value="" disabled selected>Selecione um exercício...</option>';
     
     lista.forEach(ex => {
@@ -46,10 +50,9 @@ export function obterOpcoesDeExercicios(membro) {
     return optionsHTML;
 }
 
-export function renderNovaLinhaExercicio(container, membro = "UPPER") {
+export function renderNovaLinhaExercicio(container, membro = "PUSH") {
     const block = document.createElement('div');
     block.className = 'exercise-block';
-    // Transição suave para o efeito visual de troca
     block.style.transition = 'background-color 0.3s ease'; 
     
     block.innerHTML = `
@@ -76,7 +79,6 @@ export function renderNovaLinhaExercicio(container, membro = "UPPER") {
         </div>
     `;
 
-    // Função interna para dar um feedback visual ao mover
     const destacarBloco = (elemento) => {
         elemento.style.backgroundColor = 'var(--border-color)';
         setTimeout(() => {
@@ -84,10 +86,8 @@ export function renderNovaLinhaExercicio(container, membro = "UPPER") {
         }, 200);
     };
 
-    // Lógica para Remover
     block.querySelector(".btn-remove").addEventListener("click", () => block.remove());
     
-    // Lógica para Mover para Cima
     block.querySelector(".btn-move-up").addEventListener("click", () => {
         if (block.previousElementSibling) {
             block.parentNode.insertBefore(block, block.previousElementSibling);
@@ -95,7 +95,6 @@ export function renderNovaLinhaExercicio(container, membro = "UPPER") {
         }
     });
 
-    // Lógica para Mover para Baixo
     block.querySelector(".btn-move-down").addEventListener("click", () => {
         if (block.nextElementSibling) {
             block.parentNode.insertBefore(block.nextElementSibling, block);
@@ -159,7 +158,6 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
 
         treinosDaSemana.forEach(sessao => {
             const card = document.createElement('div');
-            // Removemos a classe 'card-treino-v2' para não dar conflito com o accordion interno
 
             let htmlExercicios = "";
             if (sessao.exercicios && Array.isArray(sessao.exercicios)) {
@@ -192,7 +190,6 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
                 });
             }
 
-            // Novo layout do card em formato "sanfona" (accordion)
             card.innerHTML = `
                 <details class="semana-accordion" style="margin-bottom: 12px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--accent); width: 100%;">
                     <summary class="semana-summary" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; list-style: none;">
@@ -213,7 +210,6 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
                 </details>
             `;
             
-            // Adicionando os eventos com stopPropagation para não abrir/fechar o card ao clicar nos botões
             card.querySelector(".btn-edit").addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
