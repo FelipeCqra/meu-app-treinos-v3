@@ -12,7 +12,7 @@ const exerciciosUpper = [
 ].concat(exerciciosGerais);
 
 const exerciciosLower = [
-    "--- QUADRÍCEPS ---", "Cadeira extensora", "Leg horizontal unilateral", "Hack machine", "Leg 45", "Agachamento smith", "Agachamento máquina", "Cadeira adutora",
+    "--- QUADRÍCEPS ---", "Cadeira extensora", "Leg horizontal unilateral", "Leg horizontal", "Hack machine", "Leg 45", "Agachamento smith", "Afundo máquina", "Agachamento máquina", "Cadeira adutora",
     "--- POSTERIOR ---", "Mesa flexora unilateral", "Cadeira flexora unilateral", "Mesa flexora", "Cadeira flexora", "Stiff", "Flexor em pé unilateral", "Extensão lombar no banco romano", "Cadeira abdutora",
     "--- PANTURRILHA ---", "Panturrilha leg horizontal", "Panturrilha sentado", "Panturrilha em pé unilateral livre"
 ].concat(exerciciosGerais);
