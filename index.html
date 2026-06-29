@@ -410,17 +410,24 @@
         </section>
 
         <section id="tab-feedbacks" class="app-tab">
-            <header class="tab-header">
-                <h1>Histórico & Feedbacks</h1>
-                <p>Análise de evolução e registros passados</p>
-            </header>
-
-            <div id="feedbacks-container" style="margin-bottom: 120px;">
-                <div id="volume-summary-container"></div>
-                
-                <div id="historico-accordion-container" style="margin-top: 24px;"></div>
+    <header class="tab-header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>Histórico</h1>
+                <p>Sua evolução em semanas</p>
             </div>
-        </section>
+            <!-- Este botão não pode sumir, caso contrário o main.js irá travar -->
+            <button type="button" id="btn-cancelar-edicao" class="btn btn-secondary hidden" style="width: auto; padding: 8px 12px; margin: 0; font-size: 12px; color:#ff3b30; border-color: rgba(255,59,48,0.3);">
+                ❌ Cancelar Edição
+            </button>
+        </div>
+    </header>
+    
+    <!-- O main.js e o render.js usarão apenas este ID para injetar os dados -->
+    <div id="historico-container" style="margin-bottom: 120px;"></div>
+</section>
+
+
 
     </main>
 
