@@ -205,86 +205,69 @@ async function handleFormSubmit(e) {
     parts[2],
   ).getTime();
 
-  // Dentro de main.js -> substitua a parte de validação na função handleFormSubmit:
-
-  // ... (código anterior preservado)
   const exerciseBlocks = document.querySelectorAll(".exercise-block");
   const exerciciosRealizados = [];
   let erroValidacao = false;
-  const tipoTreinoSelecionado = document.getElementById("tipo-treino").value;
 
-  // SÓ VALIDA EXERCÍCIOS SE NÃO FOR DELOAD TOTAL
-  if (tipoTreinoSelecionado !== "DELOAD") {
-    exerciseBlocks.forEach((block) => {
-      const name = block.querySelector(".ex-name").value;
-      if (!name) {
-        mostrarNotificacao(
-          "Selecione o nome em todos os exercícios!",
-          "warning",
-        );
+  exerciseBlocks.forEach((block) => {
+    const name = block.querySelector(".ex-name").value;
+    if (!name) {
+      mostrarNotificacao("Selecione o nome em todos os exercícios!", "warning");
+      erroValidacao = true;
+      return;
+    }
+
+    const setRows = block.querySelectorAll(".dynamic-set");
+    const seriesExtraidas = [];
+
+    setRows.forEach((row) => {
+      const reps = row.querySelector(".set-reps").value.trim();
+      if (!reps) {
+        mostrarNotificacao(`Preencha as repetições de "${name}"`, "warning");
         erroValidacao = true;
         return;
       }
-
-      const setRows = block.querySelectorAll(".dynamic-set");
-      const seriesExtraidas = [];
-
-      setRows.forEach((row) => {
-        const reps = row.querySelector(".set-reps").value.trim();
-        if (!reps) {
-          mostrarNotificacao(`Preencha as repetições de "${name}"`, "warning");
-          erroValidacao = true;
-          return;
-        }
-        seriesExtraidas.push({
-          tipo: row.querySelector(".set-type").value,
-          placas: row.querySelector(".set-placas").value,
-          carga: row.querySelector(".set-load").value,
-          reps: reps,
-        });
-      });
-
-      if (seriesExtraidas.length === 0) {
-        mostrarNotificacao(
-          `Adicione pelo menos 1 série para "${name}"!`,
-          "warning",
-        );
-        erroValidacao = true;
-        return;
-      }
-
-      exerciciosRealizados.push({
-        nome: name,
-        series: seriesExtraidas,
-        feedback: block.querySelector(".ex-feedback").value,
+      seriesExtraidas.push({
+        tipo: row.querySelector(".set-type").value,
+        placas: row.querySelector(".set-placas").value,
+        carga: row.querySelector(".set-load").value,
+        reps: reps,
       });
     });
 
-    if (erroValidacao) return;
-
-    if (exerciciosRealizados.length === 0) {
-      return mostrarNotificacao(
-        "Adicione um exercício para salvar!",
+    if (seriesExtraidas.length === 0) {
+      mostrarNotificacao(
+        `Adicione pelo menos 1 série para "${name}"!`,
         "warning",
       );
+      erroValidacao = true;
+      return;
     }
+
+    exerciciosRealizados.push({
+      nome: name,
+      series: seriesExtraidas,
+      feedback: block.querySelector(".ex-feedback").value,
+    });
+  });
+
+  if (erroValidacao) return;
+
+  if (exerciciosRealizados.length === 0) {
+    return mostrarNotificacao("Adicione um exercício para salvar!", "warning");
   }
 
-  // O objeto da sessão será gerado normalmente (vazio ou preenchido)
   const sessaoCompleta = {
     semana: parseInt(semanaInput),
     semanaNum: parseInt(semanaInput),
-    faseDescricao:
-      document.getElementById("fase-desc").value ||
-      (tipoTreinoSelecionado === "DELOAD" ? "Descanso Total" : ""),
+    faseDescricao: document.getElementById("fase-desc").value,
     dataTreino: rawDate,
     dataStr: dataStrFormatada,
     dataMilisegundos: timestampMilisegundos,
-    treino: tipoTreinoSelecionado,
+    treino: document.getElementById("tipo-treino").value,
     notasGerais: document.getElementById("notas-gerais").value,
     exercicios: exerciciosRealizados,
   };
-  // ... (resto do código de envio para o Firebase permanece igual)
 
   const btnSalvar = document.getElementById("btn-salvar-treino");
   const btnText = btnSalvar.querySelector(".btn-text");
@@ -325,34 +308,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const tipoTreinoInput = document.getElementById("tipo-treino");
   const btnSalvar = document.getElementById("btn-salvar-treino");
 
-  // Dentro de main.js -> ajuste o listener do DOMContentLoaded:
-  // Procure por esta parte no final do seu main.js dentro do document.addEventListener("DOMContentLoaded")
   if (tipoTreinoInput) {
     tipoTreinoInput.addEventListener("change", () => {
       const novoMembro = obterMembroAtual();
-      const container = document.getElementById("exercicios-container");
-
-      // 1. Se mudou para DELOAD, exibe apenas a mensagem de aviso
-      if (novoMembro === "DELOAD") {
-        container.innerHTML = `<p style="color:var(--warning); padding:10px; font-size:13px;">Regime de Deload Total: Nenhum exercício necessário.</p>`;
-        return;
-      }
-
-      // 2. Se saiu do DELOAD para um treino normal, o container estará sem blocos de exercícios.
-      // Verificamos se NÃO existe nenhum bloco de exercício na tela. Se não houver, recriamos o primeiro.
-      if (!container.querySelector(".exercise-block")) {
-        container.innerHTML = ""; // Limpa a mensagem do deload
-        renderNovaLinhaExercicio(container, novoMembro); // Cria um bloco de exercício limpo correspondente ao treino
-      } else {
-        // 3. Caso contrário (mudando entre fichas normais normais, ex: PUSH -> PULL), mantemos a sua lógica original
-        document.querySelectorAll(".ex-name").forEach((select) => {
-          const valorAtual = select.value;
-          select.innerHTML = obterOpcoesDeExercicios(novoMembro);
-          if (Array.from(select.options).some((o) => o.value === valorAtual)) {
-            select.value = valorAtual;
-          }
-        });
-      }
+      document.querySelectorAll(".ex-name").forEach((select) => {
+        const valorAtual = select.value;
+        select.innerHTML = obterOpcoesDeExercicios(novoMembro);
+        if (Array.from(select.options).some((o) => o.value === valorAtual)) {
+          select.value = valorAtual;
+        }
+      });
     });
   }
 
