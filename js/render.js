@@ -104,7 +104,6 @@ export const dbExercicios = {
   LEGS1: exerciciosLower,
   LEGS2: exerciciosLower,
   LEGS: exerciciosLower, // Mantido internamente apenas para não bugar treinos antigos já salvos no histórico
-  DELOAD: [], // Array vazio já que não há exercícios fixos
 };
 
 export function obterOpcoesDeExercicios(membro) {
@@ -239,53 +238,59 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
     treinosDaSemana.forEach((sessao) => {
       const card = document.createElement("div");
 
-      // Dentro de render.js -> Modifique a lógica dentro do laço treinosDaSemana.forEach(sessao => { ... })
-
-      let borderStyle = "border-left: 4px solid var(--accent);";
       let htmlExercicios = "";
-
-      if (sessao.treino === "DELOAD") {
-        borderStyle =
-          "border-left: 4px solid var(--warning); background: rgba(255,159,10,0.05);";
-        htmlExercicios = `
-        <div style="background: rgba(255,159,10,0.1); padding: 12px; border-radius: 8px; text-align: center; color: var(--warning); font-weight: 600; font-size: 13px;">
-            🛑 SEMANA DE DELOAD / DESCANSO TOTAL REPARADOR
-        </div>`;
-      } else if (sessao.exercicios && Array.isArray(sessao.exercicios)) {
+      if (sessao.exercicios && Array.isArray(sessao.exercicios)) {
         sessao.exercicios.forEach((ex) => {
           let htmlSeries = "";
           if (ex.series && Array.isArray(ex.series)) {
-            // ... (Mantenha toda a sua lógica existente de renderização de séries aqui dentro)
+            ex.series.forEach((s, index) => {
+              let badgeStyle = "background: #1b263b; color: #8ecae6;";
+              if (s.tipo === "Ajuste")
+                badgeStyle = "background: #3e2723; color: #ffb703;";
+              if (s.tipo === "Válida")
+                badgeStyle = "background: #143622; color: #2ec4b6;";
+
+              let infoPeso = [];
+              if (s.placas) infoPeso.push(`${s.placas} Pl.`);
+              if (s.carga) infoPeso.push(`${s.carga}kg`);
+              let strPeso =
+                infoPeso.length > 0 ? infoPeso.join(" / ") : "Sem peso";
+
+              htmlSeries += `
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px; margin-bottom:3px; border-radius:6px; font-size:11px; font-family:monospace; ${badgeStyle}">
+                                    <span>${index + 1}. ${s.tipo}</span>
+                                    <span>${strPeso} | <b>${s.reps} Reps</b></span>
+                                </div>`;
+            });
           }
           htmlExercicios += `
-            <div style="background:var(--bg-input); padding:8px; border-radius:8px; margin-top:8px;">
-                <div style="font-weight:700; color:#fff; margin-bottom:4px; font-size:13px;">🏋️ ${ex.nome}</div>
-                <div>${htmlSeries}</div>
-                ${ex.feedback ? `<p style="font-size:11px; color:var(--text-muted); font-style:italic; margin-top:4px; padding-top:2px; border-top:1px dashed #222;">↳ ${ex.feedback}</p>` : ""}
-            </div>`;
+                        <div style="background:var(--bg-input); padding:8px; border-radius:8px; margin-top:8px;">
+                            <div style="font-weight:700; color:#fff; margin-bottom:4px; font-size:13px;">🏋️ ${ex.nome}</div>
+                            <div>${htmlSeries}</div>
+                            ${ex.feedback ? `<p style="font-size:11px; color:var(--text-muted); font-style:italic; margin-top:4px; padding-top:2px; border-top:1px dashed #222;">↳ ${ex.feedback}</p>` : ""}
+                        </div>`;
         });
       }
 
-      // Substitua a atribuição do card.innerHTML para usar a variável borderStyle dinâmica:
       card.innerHTML = `
-    <details class="semana-accordion" style="margin-bottom: 12px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); ${borderStyle} width: 100%;">
-        <summary class="semana-summary" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; list-style: none;">
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <h4 style="font-size:15px; font-weight:700; margin: 0; color: ${sessao.treino === "DELOAD" ? "var(--warning)" : "#fff"}">${sessao.treino === "DELOAD" ? "🚫 DELOAD TOTAL" : sessao.treino}</h4>
-                <span style="font-size:11px; color:var(--text-muted);">${sessao.dataStr} ${sessao.faseDescricao ? `• 🏷️ ${sessao.faseDescricao}` : ""}</span>
-            </div>
-            <div style="display:flex; gap:6px;">
-                <button class="btn-edit" style="background:#2C2C2E; color:#FFF; border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Editar">✏️</button>
-                <button class="btn-del" style="background:rgba(255,59,48,0.1); color:var(--accent); border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Excluir">🗑️</button>
-            </div>
-        </summary>
-        
-        <div class="accordion-content" style="padding: 0 12px 12px 12px;">
-            <div style="margin-bottom: 8px;">${htmlExercicios}</div>
-            ${sessao.notesGerais || sessao.notasGerais ? `<div style="background:var(--bg-input); border-left:2px solid var(--accent); padding:8px; border-radius:4px; margin-top:8px; font-size:12px; color:#ccc; line-height: 1.4;">📝 <b>Nota:</b> ${sessao.notasGerais || sessao.notesGerais}</div>` : ""}
-        </div>
-    </details>
-`;
+                <details class="semana-accordion" style="margin-bottom: 12px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--accent); width: 100%;">
+                    <summary class="semana-summary" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; list-style: none;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <h4 style="font-size:15px; font-weight:700; margin: 0;">${sessao.treino}</h4>
+                            <span style="font-size:11px; color:var(--text-muted);">${sessao.dataStr} ${sessao.faseDescricao ? `• 🏷️ ${sessao.faseDescricao}` : ""}</span>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-edit" style="background:#2C2C2E; color:#FFF; border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Editar">✏️</button>
+                            <button class="btn-del" style="background:rgba(255,59,48,0.1); color:var(--accent); border:none; padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer;" title="Excluir">🗑️</button>
+                        </div>
+                    </summary>
+                    
+                    <div class="accordion-content" style="padding: 0 12px 12px 12px;">
+                        <div style="margin-bottom: 8px;">${htmlExercicios}</div>
+                        ${sessao.notasGerais ? `<div style="background:var(--bg-input); border-left:2px solid var(--accent); padding:8px; border-radius:4px; margin-top:8px; font-size:12px; color:#ccc; line-height: 1.4;">📝 <b>Nota:</b> ${sessao.notasGerais}</div>` : ""}
+                    </div>
+                </details>
+            `;
 
       card.querySelector(".btn-edit").addEventListener("click", (e) => {
         e.preventDefault();
