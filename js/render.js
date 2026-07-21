@@ -50,6 +50,7 @@ const exerciciosLower = [
   "Agachamento smith",
   "Afundo máquina",
   "Agachamento máquina",
+  "Belt Squat",
   "Cadeira adutora",
   "--- POSTERIOR ---",
   "Mesa flexora unilateral",
@@ -175,6 +176,36 @@ export function renderNovaLinhaExercicio(container, membro = "PUSH") {
     }
   });
 
+  // --- NOVA LÓGICA DE ISOMETRIA AQUI ---
+  const selectName = block.querySelector(".ex-name");
+  selectName.addEventListener("change", (e) => {
+    const isIsometria = e.target.value === "Canoinha isometria";
+    const sets = block.querySelectorAll(".dynamic-set");
+
+    sets.forEach((row) => {
+      const inputPlacas = row.querySelector(".set-placas");
+      const inputLoad = row.querySelector(".set-load");
+      const inputReps = row.querySelector(".set-reps");
+
+      if (isIsometria) {
+        inputPlacas.disabled = true;
+        inputLoad.disabled = true;
+        inputPlacas.style.opacity = "0.3";
+        inputLoad.style.opacity = "0.3";
+        inputPlacas.value = "";
+        inputLoad.value = "";
+        inputReps.placeholder = "Tempo (s)";
+      } else {
+        inputPlacas.disabled = false;
+        inputLoad.disabled = false;
+        inputPlacas.style.opacity = "1";
+        inputLoad.style.opacity = "1";
+        inputReps.placeholder = "Reps";
+      }
+    });
+  });
+  // -------------------------------------
+
   const setsContainer = block.querySelector(".sets-container");
   block
     .querySelector(".btn-add-set")
@@ -184,6 +215,15 @@ export function renderNovaLinhaExercicio(container, membro = "PUSH") {
 }
 
 export function renderNovaSerie(setsContainer, defaultType = "Ajuste") {
+  // Verifica qual é o exercício atual no bloco pai
+  const block = setsContainer.closest(".exercise-block");
+  const selectName = block ? block.querySelector(".ex-name") : null;
+  const isIsometria = selectName && selectName.value === "Canoinha isometria";
+
+  const disabledAttr = isIsometria ? "disabled" : "";
+  const opacityStyle = isIsometria ? "opacity: 0.3;" : "";
+  const repsPlaceholder = isIsometria ? "Tempo (s)" : "Reps";
+
   const row = document.createElement("div");
   row.className = "sets-row-v2 dynamic-set";
   row.innerHTML = `
@@ -192,9 +232,9 @@ export function renderNovaSerie(setsContainer, defaultType = "Ajuste") {
             <option value="Ajuste" ${defaultType === "Ajuste" ? "selected" : ""}>Feeder</option>
             <option value="Válida" ${defaultType === "Válida" ? "selected" : ""}>Válida</option>
         </select>
-        <input type="number" class="set-placas" placeholder="Pl." style="padding: 8px 4px; text-align:center; font-size:12px;">
-        <input type="number" class="set-load" placeholder="kg" step="0.5" style="padding: 8px 4px; text-align:center; font-size:12px;">
-        <input type="text" class="set-reps" placeholder="Reps" style="padding: 8px 4px; text-align:center; font-size:12px;">
+        <input type="number" class="set-placas" placeholder="Pl." ${disabledAttr} style="padding: 8px 4px; text-align:center; font-size:12px; ${opacityStyle}">
+        <input type="number" class="set-load" placeholder="kg" step="0.5" ${disabledAttr} style="padding: 8px 4px; text-align:center; font-size:12px; ${opacityStyle}">
+        <input type="text" class="set-reps" placeholder="${repsPlaceholder}" style="padding: 8px 4px; text-align:center; font-size:12px;">
         <button type="button" class="btn-del-set" style="background:transparent; color:var(--accent); border:none; font-size:20px; cursor:pointer; text-align:center; padding-bottom: 4px;">×</button>
     `;
   row
@@ -256,10 +296,16 @@ export function renderHistoricoTreinos(treinos, container, onEdit, onDelete) {
               let strPeso =
                 infoPeso.length > 0 ? infoPeso.join(" / ") : "Sem peso";
 
+              // --- NOVA LÓGICA DE EXIBIÇÃO PARA ISOMETRIA ---
+              let labelReps =
+                ex.nome === "Canoinha isometria" ? "Segs" : "Reps";
+              if (ex.nome === "Canoinha isometria") strPeso = "Isometria";
+              // ----------------------------------------------
+
               htmlSeries += `
                                 <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px; margin-bottom:3px; border-radius:6px; font-size:11px; font-family:monospace; ${badgeStyle}">
                                     <span>${index + 1}. ${s.tipo}</span>
-                                    <span>${strPeso} | <b>${s.reps} Reps</b></span>
+                                    <span>${strPeso} | <b>${s.reps} ${labelReps}</b></span>
                                 </div>`;
             });
           }
