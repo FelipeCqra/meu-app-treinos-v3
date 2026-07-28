@@ -1,3 +1,67 @@
+// No topo do arquivo principal, importe o auth e as funções necessárias
+import { auth } from "./firebase-config.js"; // Ajuste o caminho se necessário
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// Referências da interface
+const loginScreen = document.getElementById("login-screen");
+const loginForm = document.getElementById("login-form");
+const loginError = document.getElementById("login-error");
+const btnLogout = document.getElementById("btn-logout");
+
+// 1. Escutador de Sessão (Verifica automaticamente se você já está logado)
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Usuário logado: Esconde o login e exibe o botão de sair
+    loginScreen.style.display = "none";
+    btnLogout.style.display = "block";
+
+    // CHAME A FUNÇÃO AQUI: Agora ele só busca os treinos depois de logado
+    atualizarHistorico();
+  } else {
+    // Ninguém logado: Trava na tela de login
+    loginScreen.style.display = "flex";
+    btnLogout.style.display = "none";
+  }
+});
+
+// 2. Lógica do Formulário de Login
+if (loginForm) {
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    // Tenta fazer o login
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        loginError.style.display = "none";
+        loginForm.reset();
+        // A sessão já será identificada pelo onAuthStateChanged acima
+      })
+      .catch((error) => {
+        console.error("Erro no login:", error);
+        loginError.style.display = "block";
+      });
+  });
+}
+
+// 3. Lógica de Logout (Sair)
+if (btnLogout) {
+  btnLogout.addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        console.log("Deslogado com sucesso");
+      })
+      .catch((error) => {
+        console.error("Erro ao deslogar", error);
+      });
+  });
+}
+
 import {
   salvarTreino,
   atualizarTreino,
@@ -335,5 +399,5 @@ document.addEventListener("DOMContentLoaded", () => {
     renderNovaLinhaExercicio(container, obterMembroAtual());
   }
 
-  atualizarHistorico();
+  //atualizarHistorico();
 });
