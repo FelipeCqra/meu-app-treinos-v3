@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Gym Tracker V3</title>
+    <title>Physique OS</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
@@ -37,10 +37,17 @@
           text-align: center;
         "
       >
-        <h2 style="color: #fff; margin-bottom: 20px">Gym Tracker</h2>
+        <h2 style="color: #fff; margin-bottom: 20px">Physique OS</h2>
+        
+        <!-- Adicione esta div de carregamento -->
+        <div id="login-loading" style="color: #8E8E93; font-size: 14px; margin-bottom: 20px;">
+          Verificando sessão...
+        </div>
+
+        <!-- Mude o 'display: flex;' para 'display: none;' -->
         <form
           id="login-form"
-          style="display: flex; flex-direction: column; gap: 15px"
+          style="display: none; flex-direction: column; gap: 15px"
         >
           <input
             type="email"
