@@ -11,6 +11,7 @@ const loginScreen = document.getElementById("login-screen");
 const loginForm = document.getElementById("login-form");
 const loginError = document.getElementById("login-error");
 const btnLogout = document.getElementById("btn-logout");
+const loginLoading = document.getElementById("login-loading"); // <-- ADICIONE ESTA LINHA
 
 // 1. Escutador de Sessão (Verifica automaticamente se você já está logado)
 onAuthStateChanged(auth, (user) => {
@@ -25,6 +26,12 @@ onAuthStateChanged(auth, (user) => {
     // Ninguém logado: Trava na tela de login
     loginScreen.style.display = "flex";
     btnLogout.style.display = "none";
+
+    // Esconde o texto de "Carregando" e exibe os campos de email e senha
+    if (loginLoading && loginForm) {
+      loginLoading.style.display = "none";
+      loginForm.style.display = "flex";
+    }
   }
 });
 
